@@ -1,11 +1,10 @@
 public class Main {
     public static void main(String[] args){
 
-        zwierze zwierzak = new zwierze("Pies",3);
-        zwierze zwierzak2 = new zwierze("Kot", 3);
+        Zwierze zwierzak = new Zwierze("Pies",3);
+        Zwierze zwierzak2 = new Zwierze("Kot", 3);
 
         zwierzak.opis();
-        zwierzak2.opis();
 
 
     }
