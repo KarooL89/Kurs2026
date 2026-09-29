@@ -1,8 +1,8 @@
-public class zwierze {
+public class Zwierze {
     String gatunek;
     int wiekZwierzecia;
 
-    public zwierze(String gatunek, int wiekZwierzecia) {
+    public Zwierze(String gatunek, int wiekZwierzecia) {
         this.gatunek = gatunek;
         this.wiekZwierzecia = wiekZwierzecia;
     }
