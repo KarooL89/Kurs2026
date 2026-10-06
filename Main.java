@@ -1,30 +1,60 @@
+class Pracownik {
+    private String imie;
+    private double stawkaGodzinowa;
+    private int przepracowaneGodziny;
+
+    public Pracownik(String imie, double stawkaGodzinowa, int przepracowaneGodziny) {
+        this.imie = imie;
+        this.stawkaGodzinowa = stawkaGodzinowa;
+        this.przepracowaneGodziny = przepracowaneGodziny;
+    }
+
+    public String getImie() {
+        return imie;
+    }
+
+    public void setImie(String imie) {
+        this.imie = imie;
+    }
+
+    public double getStawkaGodzinowa() {
+        return stawkaGodzinowa;
+    }
+
+    public void setStawkaGodzinowa(double stawkaGodzinowa) {
+        this.stawkaGodzinowa = stawkaGodzinowa;
+    }
+
+    public int getPrzepracowaneGodziny() {
+        return przepracowaneGodziny;
+    }
+
+    public void setPrzepracowaneGodziny(int przepracowaneGodziny) {
+        this.przepracowaneGodziny = przepracowaneGodziny;
+    }
+}
+
+class KalkulatorPensji {
+    public double oblicz(Pracownik pracownik) {
+        return pracownik.getStawkaGodzinowa() * pracownik.getPrzepracowaneGodziny();
+    }
+}
+
+class WydrukPaska {
+    public void drukuj(Pracownik pracownik, double pensja) {
+        System.out.println("Pracownik: " + pracownik.getImie());
+        System.out.println("Do wypłaty: " + pensja + " zł");
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
+        Pracownik pracownik = new Pracownik("Jan Kowalski", 55.50, 168);
 
-        ProduktWSklepie laptop = new ProduktWSklepie("Laptop", 3000.0, 10);
-        System.out.println(laptop);
-        System.out.println();
+        KalkulatorPensji kalkulator = new KalkulatorPensji();
+        double pensja = kalkulator.oblicz(pracownik);
 
-        laptop.setCenaNetto(-1.0);
-        System.out.println("Aktualna cena netto: " + laptop.getCenaNetto());
-        System.out.println();
-
-        double cenaBrutto = laptop.getCenaBrutto(0.23);
-        System.out.println("Cena netto: " + laptop.getCenaNetto() + " zł");
-        System.out.println("Cena brutto (VAT 23%): " + cenaBrutto + " zł");
-        System.out.println();
-
-        laptop.sprzedaj(9);
-        System.out.println(laptop);
-        System.out.println();
-
-        laptop.sprzedaj(11);
-        System.out.println(laptop);
-        System.out.println();
-
-        laptop.dodajDoMagazynu(1);
-        laptop.setNazwa("   ");
-        laptop.setNazwa("Laptop Gamingowy");
-        System.out.println(laptop);
+        WydrukPaska wydruk = new WydrukPaska();
+        wydruk.drukuj(pracownik, pensja);
     }
 }
