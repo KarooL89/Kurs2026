@@ -1,60 +1,44 @@
-class Pracownik {
-    private String imie;
-    private double stawkaGodzinowa;
-    private int przepracowaneGodziny;
+interface MetodaPlatnosci {
+    void zaplac(double kwota);
+}
 
-    public Pracownik(String imie, double stawkaGodzinowa, int przepracowaneGodziny) {
-        this.imie = imie;
-        this.stawkaGodzinowa = stawkaGodzinowa;
-        this.przepracowaneGodziny = przepracowaneGodziny;
-    }
-
-    public String getImie() {
-        return imie;
-    }
-
-    public void setImie(String imie) {
-        this.imie = imie;
-    }
-
-    public double getStawkaGodzinowa() {
-        return stawkaGodzinowa;
-    }
-
-    public void setStawkaGodzinowa(double stawkaGodzinowa) {
-        this.stawkaGodzinowa = stawkaGodzinowa;
-    }
-
-    public int getPrzepracowaneGodziny() {
-        return przepracowaneGodziny;
-    }
-
-    public void setPrzepracowaneGodziny(int przepracowaneGodziny) {
-        this.przepracowaneGodziny = przepracowaneGodziny;
+class PlatnoscKarta implements MetodaPlatnosci {
+    @Override
+    public void zaplac(double kwota) {
+        System.out.println("Płatność kartą: " + kwota + " zł");
     }
 }
 
-class KalkulatorPensji {
-    public double oblicz(Pracownik pracownik) {
-        return pracownik.getStawkaGodzinowa() * pracownik.getPrzepracowaneGodziny();
+class PlatnoscBlik implements MetodaPlatnosci {
+    @Override
+    public void zaplac(double kwota) {
+        System.out.println("Bliczek: " + kwota + " zł");
     }
 }
 
-class WydrukPaska {
-    public void drukuj(Pracownik pracownik, double pensja) {
-        System.out.println("Pracownik: " + pracownik.getImie());
-        System.out.println("Do wypłaty: " + pensja + " zł");
+class PlatnoscPayPal implements MetodaPlatnosci {
+    @Override
+    public void zaplac(double kwota) {
+        System.out.println("PayPal: " + kwota + " zł");
+    }
+}
+
+class SystemPlatnosci {
+    public void wykonajPlatnosc(MetodaPlatnosci metoda, double kwota) {
+        metoda.zaplac(kwota);
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        Pracownik pracownik = new Pracownik("Jan Kowalski", 55.50, 168);
+        SystemPlatnosci system = new SystemPlatnosci();
 
-        KalkulatorPensji kalkulator = new KalkulatorPensji();
-        double pensja = kalkulator.oblicz(pracownik);
+        MetodaPlatnosci karta = new PlatnoscKarta();
+        MetodaPlatnosci blik = new PlatnoscBlik();
+        MetodaPlatnosci paypal = new PlatnoscPayPal();
 
-        WydrukPaska wydruk = new WydrukPaska();
-        wydruk.drukuj(pracownik, pensja);
+        system.wykonajPlatnosc(karta, 1150.00);
+        system.wykonajPlatnosc(blik, 155.50);
+        system.wykonajPlatnosc(paypal, 3320.00);
     }
 }
