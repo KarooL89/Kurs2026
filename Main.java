@@ -1,44 +1,51 @@
-interface MetodaPlatnosci {
-    void zaplac(double kwota);
+interface Pracujacy {
+    void pracuj();
 }
 
-class PlatnoscKarta implements MetodaPlatnosci {
+interface DostepDoSerwerowni {
+    void otwórzDrzwiSerwerowni();
+}
+
+class PracownikAdministracji implements Pracujacy {
+    private String imie;
+
+    public PracownikAdministracji(String imie) {
+        this.imie = imie;
+    }
+
     @Override
-    public void zaplac(double kwota) {
-        System.out.println("Płatność kartą: " + kwota + " zł");
+    public void pracuj() {
+        System.out.println(imie + " zajmuje się biurem");
     }
 }
 
-class PlatnoscBlik implements MetodaPlatnosci {
-    @Override
-    public void zaplac(double kwota) {
-        System.out.println("Bliczek: " + kwota + " zł");
-    }
-}
+class AdministratorSieci implements Pracujacy, DostepDoSerwerowni {
+    private String imie;
 
-class PlatnoscPayPal implements MetodaPlatnosci {
-    @Override
-    public void zaplac(double kwota) {
-        System.out.println("PayPal: " + kwota + " zł");
+    public AdministratorSieci(String imie) {
+        this.imie = imie;
     }
-}
 
-class SystemPlatnosci {
-    public void wykonajPlatnosc(MetodaPlatnosci metoda, double kwota) {
-        metoda.zaplac(kwota);
+    @Override
+    public void pracuj() {
+        System.out.println(imie + " zarządza siecią.");
+    }
+
+    @Override
+    public void otwórzDrzwiSerwerowni() {
+        System.out.println(imie + " otwiera serwerownię.");
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        SystemPlatnosci system = new SystemPlatnosci();
+        Pracujacy admin = new PracownikAdministracji("Anna");
+        Pracujacy adminSieci = new AdministratorSieci("Marek");
 
-        MetodaPlatnosci karta = new PlatnoscKarta();
-        MetodaPlatnosci blik = new PlatnoscBlik();
-        MetodaPlatnosci paypal = new PlatnoscPayPal();
+        admin.pracuj();
+        adminSieci.pracuj();
 
-        system.wykonajPlatnosc(karta, 1150.00);
-        system.wykonajPlatnosc(blik, 155.50);
-        system.wykonajPlatnosc(paypal, 3320.00);
+        DostepDoSerwerowni osobaZDostepem = new AdministratorSieci("Marek");
+        osobaZDostepem.otwórzDrzwiSerwerowni();
     }
 }
