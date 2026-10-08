@@ -1,51 +1,86 @@
-interface Pracujacy {
-    void pracuj();
+interface Włączalne {
+    void włącz();
+    void wyłącz();
 }
 
-interface DostepDoSerwerowni {
-    void otwórzDrzwiSerwerowni();
+interface Ściemnialne {
+    void ustawJasność(int poziom);
 }
 
-class PracownikAdministracji implements Pracujacy {
-    private String imie;
+interface OdtwarzaczAudio {
+    void odtwarzaj(String utwór);
+}
 
-    public PracownikAdministracji(String imie) {
-        this.imie = imie;
+interface CzujnikPomiarowy {
+    double pobierzOdczyt();
+}
+
+class InteligentnaŻarówka implements Włączalne, Ściemnialne {
+    private boolean włączona = false;
+    private int jasność = 100;
+
+    @Override
+    public void włącz() {
+        włączona = true;
+        System.out.println("Żarówka włączona");
     }
 
     @Override
-    public void pracuj() {
-        System.out.println(imie + " zajmuje się biurem");
+    public void wyłącz() {
+        włączona = false;
+        System.out.println("Żarówka wyłączona");
+    }
+
+    @Override
+    public void ustawJasność(int poziom) {
+        jasność = poziom;
+        System.out.println("Jasność ustawiona na: " + poziom + "%");
     }
 }
 
-class AdministratorSieci implements Pracujacy, DostepDoSerwerowni {
-    private String imie;
+class InteligentnyGłośnik implements Włączalne, OdtwarzaczAudio {
+    private boolean włączony = false;
 
-    public AdministratorSieci(String imie) {
-        this.imie = imie;
+    @Override
+    public void włącz() {
+        włączony = true;
+        System.out.println("Głośnik włączony");
     }
 
     @Override
-    public void pracuj() {
-        System.out.println(imie + " zarządza siecią.");
+    public void wyłącz() {
+        włączony = false;
+        System.out.println("Głośnik wyłączony");
     }
 
     @Override
-    public void otwórzDrzwiSerwerowni() {
-        System.out.println(imie + " otwiera serwerownię.");
+    public void odtwarzaj(String utwór) {
+        System.out.println("Odtwarzanie: " + utwór);
+    }
+}
+
+class CzujnikDymu implements CzujnikPomiarowy {
+    @Override
+    public double pobierzOdczyt() {
+        double stezenie = 0.03;
+        System.out.println("Stężenie dymu: " + stezenie);
+        return stezenie;
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        Pracujacy admin = new PracownikAdministracji("Anna");
-        Pracujacy adminSieci = new AdministratorSieci("Marek");
+        InteligentnaŻarówka zarowka = new InteligentnaŻarówka();
+        zarowka.włącz();
+        zarowka.ustawJasność(60);
+        zarowka.wyłącz();
 
-        admin.pracuj();
-        adminSieci.pracuj();
+        InteligentnyGłośnik glosnik = new InteligentnyGłośnik();
+        glosnik.włącz();
+        glosnik.odtwarzaj("Imagine - John Lennon");
+        glosnik.wyłącz();
 
-        DostepDoSerwerowni osobaZDostepem = new AdministratorSieci("Marek");
-        osobaZDostepem.otwórzDrzwiSerwerowni();
+        CzujnikDymu czujnik = new CzujnikDymu();
+        czujnik.pobierzOdczyt();
     }
 }
