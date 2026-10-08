@@ -1,86 +1,39 @@
-interface Włączalne {
-    void włącz();
-    void wyłącz();
+interface PowiadomienieSerwis {
+    void wyslijPowiadomienie(String odbiorca, String tresc);
 }
-
-interface Ściemnialne {
-    void ustawJasność(int poziom);
-}
-
-interface OdtwarzaczAudio {
-    void odtwarzaj(String utwór);
-}
-
-interface CzujnikPomiarowy {
-    double pobierzOdczyt();
-}
-
-class InteligentnaŻarówka implements Włączalne, Ściemnialne {
-    private boolean włączona = false;
-    private int jasność = 100;
-
+class EmailSerwis implements PowiadomienieSerwis {
     @Override
-    public void włącz() {
-        włączona = true;
-        System.out.println("Żarówka włączona");
-    }
-
-    @Override
-    public void wyłącz() {
-        włączona = false;
-        System.out.println("Żarówka wyłączona");
-    }
-
-    @Override
-    public void ustawJasność(int poziom) {
-        jasność = poziom;
-        System.out.println("Jasność ustawiona na: " + poziom + "%");
+    public void wyslijPowiadomienie(String odbiorca, String tresc){
+        System.out.println("Wysyłanie meila do: " + odbiorca + "\nO treści: " + tresc);
     }
 }
-
-class InteligentnyGłośnik implements Włączalne, OdtwarzaczAudio {
-    private boolean włączony = false;
-
+class SMSSerwis implements PowiadomienieSerwis{
     @Override
-    public void włącz() {
-        włączony = true;
-        System.out.println("Głośnik włączony");
-    }
-
-    @Override
-    public void wyłącz() {
-        włączony = false;
-        System.out.println("Głośnik wyłączony");
-    }
-
-    @Override
-    public void odtwarzaj(String utwór) {
-        System.out.println("Odtwarzanie: " + utwór);
+    public void wyslijPowiadomienie(String odbiorca, String tresc){
+        System.out.println("Wysyłanie sms do " + odbiorca + "\nO treści: " + tresc);
     }
 }
-
-class CzujnikDymu implements CzujnikPomiarowy {
-    @Override
-    public double pobierzOdczyt() {
-        double stezenie = 0.03;
-        System.out.println("Stężenie dymu: " + stezenie);
-        return stezenie;
+class ProcesZamowienia{
+    private final PowiadomienieSerwis powiadomienieSerwis;
+    public ProcesZamowienia(PowiadomienieSerwis powiadomienieSerwis){
+        this.powiadomienieSerwis = powiadomienieSerwis;
+    }
+    public void finalizujZamowienie(String klient){
+        String tresc = "Twoje zamówienie zostało przyjęte i jest w trakcie realizacji";
+        powiadomienieSerwis.wyslijPowiadomienie(klient, tresc);
+        System.out.println("Zamówienie dla: " + klient + " zostało zrealizowane :)");
     }
 }
+public class Main{
+    static void main() {
+        PowiadomienieSerwis emailSerwis = new EmailSerwis();
+        ProcesZamowienia procesEmail = new ProcesZamowienia(emailSerwis);
+        procesEmail.finalizujZamowienie("Karol.Drewniak@gmail.com");
 
-public class Main {
-    public static void main(String[] args) {
-        InteligentnaŻarówka zarowka = new InteligentnaŻarówka();
-        zarowka.włącz();
-        zarowka.ustawJasność(60);
-        zarowka.wyłącz();
+        System.out.println();
 
-        InteligentnyGłośnik glosnik = new InteligentnyGłośnik();
-        glosnik.włącz();
-        glosnik.odtwarzaj("Imagine - John Lennon");
-        glosnik.wyłącz();
-
-        CzujnikDymu czujnik = new CzujnikDymu();
-        czujnik.pobierzOdczyt();
+        PowiadomienieSerwis smsSerwis = new SMSSerwis();
+        ProcesZamowienia procesSMS = new ProcesZamowienia(smsSerwis);
+        procesSMS.finalizujZamowienie("+48 666 777 888");
     }
 }
